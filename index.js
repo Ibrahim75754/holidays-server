@@ -25,18 +25,33 @@ async function run() {
         const packagesCollection = database.collection('packages');
         const ordersCollection = database.collection('orders');
 
-        //POST API ...... insert to database
+        //POST API ...... 
+
+        //insert packages
         app.post('/packages', async (req,res) => {
             const pac= req.body;
             const result= await packagesCollection.insertOne(pac);
             res.send(result);
         });
+        //insert orders
+        app.post('/placeOrder', async (req,res) => {
+            const order= req.body;
+            const result= await ordersCollection.insertOne(order);
+            res.send(result);
+        });
         
-        //GET API ....... load from database
+        //GET API .......
+        // load from database
         app.get('/packages', async(req,res) => {
             const cursor = packagesCollection.find({});
             const packages = await cursor.toArray();
             res.send(packages);
+        });
+
+        app.get('/myOrders', async (req, res) => {
+            const cursor = ordersCollection.find({});
+            const orders = await cursor.toArray();
+            res.json(orders);
         });
 
 
